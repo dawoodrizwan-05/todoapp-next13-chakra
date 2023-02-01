@@ -1,91 +1,70 @@
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from './page.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
-
+"use client"
+import { Button, Flex, ListItem, UnorderedList, Text, Input, Box, ButtonGroup } from '@chakra-ui/react'
+import { use, useState } from 'react'
 export default function Home() {
+  const [tasks, setTasks] = useState(['WELLCOME TO TODO APP'])
+  const [Item, setItem] = useState("")
+
+  function removeItem(taskName: string) {
+    setTasks(tasks.filter(task => {
+      return task != taskName
+    }))
+  }
+
+
+  function AddItem() {
+    if (Item != "" && !tasks.includes(Item)) {
+      let temp = tasks;
+      temp.push(Item)
+      setTasks(temp)
+      setItem("")
+    }
+  }
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <Flex
+        padding='2'
+        backgroundColor='ButtonHighlight'
+        flexDirection="column">
+        <Text fontSize={['2xl', '3xl', '3xl']} textAlign='center' color='black'>AWESOME TODO APP </Text>
+        <Text mb='2' fontSize={['1xl', '3xl', '3xl']} color='black'>PLEASE ENTER YOUR TODOS: </Text>
+        <Input
+          placeholder='ENTER YOUR TODO'
+          value={Item}
+          color="black"
+          onChange={(e) => {
+            setItem(e.target.value)
+          }}
         >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+        </Input>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Button size='md' m='4' bgColor='twitter.900' color='white'
+          onClick={AddItem}>ADD TODO</Button>
+      </Flex>
+      <Box
+        bgColor='aqua'
+      >
+        <UnorderedList
+          p='2'
+
         >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+          {tasks.map((task) => {
+            return (<ListItem key={task}   >
+              {task}
+              <Button size='sm' bgColor='ActiveCaption' color='white'
+                ml={['80%', "85%", "95%"]}
+                mt='-9'
+                onClick={() => {
+                  removeItem(task)
+                }}>
+                Delete
+
+              </Button>
+            </ListItem>)
+          })}
+        </UnorderedList>
+      </Box>
+
+    </>)
 }
